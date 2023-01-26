@@ -11,7 +11,7 @@ const DataQuizForm = ({ onClick, data, isNewQuiz, onBack }) => {
   const [values, setValues] = useState({
     title: data.title,
     description: data.description,
-    url: data.url,
+    url: data.url,  
     score: data.score,
   });
 

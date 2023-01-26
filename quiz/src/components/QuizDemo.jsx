@@ -1,6 +1,6 @@
-import { Button, Link, Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useEffect, useState } from "react"; 
+import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import { StyledButtonLarge } from "./common/StyledButton";
 
@@ -17,7 +17,6 @@ const StyledTypographyOption = styled("div")(({ disabledOption }) => ({
   },
 }));
 
-
 const StyledMessage = styled("div")(({ isSuccessOption }) => ({
   backgroundColor: isSuccessOption ? "green" : "red",
   borderRadius: "20px",
@@ -28,22 +27,15 @@ const StyledMessage = styled("div")(({ isSuccessOption }) => ({
   textTransform: "uppercase",
 }));
 
-const QuizDemo = (data) => {
-    console.log(data)
-  //const [change, setChange] = useState(true);
+const QuizDemo = ({ data, onBack }) => {
   const [currentQuestion, setQuestion] = useState(0);
-  // const [currentAnswer, setCurrentAnswer] = useState(1);
   const [message, setMessage] = useState(null);
   const [isSuccessOption, setIsSuccessOption] = useState(false);
   const [score, setScore] = useState(0);
-   
-  const { title, description, url, id, questions_answers } = data.data;
-  const [disabledOption, setDisabledOption] = useState(false); 
-
-  useEffect(() => {}, []);
+  const { title, description, url, questions_answers } = data;
+  const [disabledOption, setDisabledOption] = useState(false);
 
   const onClickAnswer = (itemAnswer, itemQuestion) => {
-    setQuestion(itemQuestion.answer_id);
     if (itemAnswer.is_true) {
       setDisabledOption(true);
       setScore(score + 50);
@@ -60,10 +52,15 @@ const QuizDemo = (data) => {
     setQuestion(currentQuestion + 1);
     setMessage(null);
   };
+
+  const onClickGoBack = () => {
+    onBack();
+  };
+
   return (
     <Container maxWidth="sm">
-         <Typography align="center" variant="h3" component="h2" marginTop="3rem">
-        {'Demo'}
+      <Typography align="center" variant="h3" component="h2" marginTop="3rem">
+        {"Demo"}
       </Typography>
       <Typography align="center" variant="h3" component="h2" marginTop="3rem">
         {title}
@@ -74,7 +71,7 @@ const QuizDemo = (data) => {
 
       {questions_answers &&
         questions_answers.map(
-          (itemQuestion , index) =>
+          (itemQuestion, index) =>
             currentQuestion == index && (
               <>
                 <Typography
@@ -101,14 +98,24 @@ const QuizDemo = (data) => {
                       </StyledTypographyOption>
                     </div>
                   ))}
+                <StyledMessage isSuccessOption={isSuccessOption}>
+                  {message}
+                </StyledMessage>
+
+                <div onClick={() => onNextQuestion()}>
+                  <StyledButtonLarge disabledOption={disabledOption}>
+                    {"Next"}
+                  </StyledButtonLarge>
+                </div>
               </>
             )
         )}
-      <StyledMessage isSuccessOption={isSuccessOption}>{message}</StyledMessage>
 
-      <div onClick={() => onNextQuestion()}>
-        <StyledButtonLarge disabledOption={disabledOption}>{"Next"}</StyledButtonLarge>
-      </div>
+      {questions_answers && questions_answers.length == currentQuestion && (
+        <div onClick={() => onClickGoBack()}>
+          <StyledButtonLarge>{"EXIT"}</StyledButtonLarge>
+        </div>
+      )}
       <Typography align="center" variant="h5" component="h2" marginTop="2rem">
         {`${"Total Score :  "}${score}`}
       </Typography>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,6 +9,7 @@ import { styled } from "@mui/system";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const StyledTableHead = styled(TableHead)(() => ({
   backgroundColor: "darkseagreen",
@@ -21,14 +22,19 @@ const StyledTableContainer = styled(TableContainer)(() => ({
   marginTop: "2rem",
 }));
 
-const TableList = ({ rows, columns, onClick , onViewDemo }) => {
+const TableList = ({ rows, columns, onClick, onViewDemo, onDelete }) => {
   const noDataLabel = "No Data";
+
   const onViewData = (row) => {
     onClick(row);
   };
-  const onClickViewDemo = (row) => { 
+  const onClickViewDemo = (row) => {
     onViewDemo(row);
   };
+  const onClickDelete = (row) => {
+    onDelete(row);
+  };
+
   return (
     <StyledTableContainer>
       <Table aria-label="simple table">
@@ -53,7 +59,7 @@ const TableList = ({ rows, columns, onClick , onViewDemo }) => {
                 {row.created ? row.created : noDataLabel}
               </TableCell>
               <TableCell align="left">
-                {row.modified ? row.modified : noDataLabel}
+                {row.url ? row.url : noDataLabel}
               </TableCell>
               <TableCell align="left">
                 {row.score ? row.score : noDataLabel}
@@ -62,10 +68,15 @@ const TableList = ({ rows, columns, onClick , onViewDemo }) => {
                 <IconButton color="seagreen" onClick={() => onViewData(row)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton color="seagreen" onClick={() => onClickViewDemo(row)}>
+                <IconButton color="seagreen" onClick={() => onClickDelete(row)}>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton
+                  color="seagreen"
+                  onClick={() => onClickViewDemo(row)}
+                >
                   <VisibilityIcon />
                 </IconButton>
-                
               </TableCell>
             </TableRow>
           ))}

@@ -1,18 +1,18 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import { StyledButton } from "./common/StyledButton";
- 
-const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
-  const [disabled, setSetDisabled] = useState(false);
-  const [values, setValues] = React.useState({
-    title: data.title,
-    description:data.description,
-    url: data.url,
 
-    
+const DataQuizForm = ({ onClick, data, isNewQuiz, onBack }) => {
+  const [disabled, setSetDisabled] = useState(false);
+
+  const [values, setValues] = useState({
+    title: data.title,
+    description: data.description,
+    url: data.url,
+    score: data.score,
   });
 
   useEffect(() => {
@@ -20,33 +20,29 @@ const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
   }, []);
 
   const onSaveQuiz = () => {
-    data.title = values.title;
-    data.description = values.description;
-    if (isNewQuiz) {
-      data.id = Math.random();
-    }
-    disabled ? setSetDisabled(false) : onClick(data);
+    let newData = { ...data, ...values };
+    disabled ? setSetDisabled(false) : onClick(newData);
   };
+
   const onClickBack = () => {
     onBack();
   };
-  
-  const handleChange = (name) => (event) => { 
-    console.log(name)
+
+  const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
   return (
     <>
       <Typography align="center" variant="h5" component="h2" marginTop="1rem">
-        {"Create new Quiz"}
+        {disabled ? "Edit Quiz" : "Create new Quiz"}
       </Typography>
-      <StyledButton  onClick={onSaveQuiz}>
-          {disabled ? "Edit" : "Save"}
-        </StyledButton>
-        <StyledButton   onClick={onClickBack}>
-          {disabled ? "Back" :  "Cancel" }
-        </StyledButton>
+      <StyledButton onClick={onSaveQuiz}>
+        {disabled ? "Edit" : "Save"}
+      </StyledButton>
+      <StyledButton onClick={onClickBack}>
+        {disabled ? "Back" : "Cancel"}
+      </StyledButton>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Typography
@@ -77,7 +73,7 @@ const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
           <FormControl
             fullWidth
             variant="standard"
-            sx={{ m: 1, width: "100ch" }}
+            sx={{ m: 1, width: "80ch" }}
             disabled={disabled}
           >
             <TextField
@@ -86,6 +82,20 @@ const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
               label="Quiz Description"
               defaultValue={data ? data.description : "Quiz Description"}
               onChange={handleChange("description")}
+            />
+          </FormControl>
+          <FormControl
+            fullWidth
+            variant="standard"
+            sx={{ m: 1, width: "15ch" }}
+            disabled={disabled}
+          >
+            <TextField
+              disabled={disabled}
+              id="score"
+              label="Score"
+              defaultValue={data ? data.score : "0"}
+              onChange={handleChange("score")}
             />
           </FormControl>
 
@@ -128,8 +138,8 @@ const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
                       disabled={disabled}
                       id={question.text}
                       label={question.text}
-                      defaultValue={question.text}                      
-                      onChange={handleChange(question.text)}
+                      defaultValue={question.text}
+                      onChange={handleChange(`${"question"}${question.id}`)}
                     />
                   </FormControl>
                   {question.answers &&
@@ -145,7 +155,11 @@ const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
                             id={answer.text}
                             label={answer.text}
                             defaultValue={answer.text}
-                            onChange={handleChange(answer.text)}
+                            onChange={handleChange(
+                              `${"question"}${question.id}${"answer"}${
+                                answer.id
+                              }`
+                            )}
                           />
                         </FormControl>
                       </>
@@ -167,7 +181,7 @@ const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
                       disabled={disabled}
                       id={question.feedback_false}
                       label={question.feedback_false}
-                      defaultValue={question.feedback_false} 
+                      defaultValue={question.feedback_false}
                       onChange={handleChange(question.feedback_false)}
                     />
                   </FormControl>
@@ -180,14 +194,14 @@ const DataQuizForm = ({ onClick, data, isNewQuiz , onBack }) => {
                       disabled={disabled}
                       id={question.feedback_true}
                       label={question.feedback_true}
-                      defaultValue={question.feedback_true}                      
+                      defaultValue={question.feedback_true}
                       onChange={handleChange(question.feedback_true)}
                     />
                   </FormControl>
                 </>
               ))
             : null}
-        </Grid> 
+        </Grid>
       </Grid>
     </>
   );

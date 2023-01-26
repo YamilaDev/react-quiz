@@ -2,6 +2,7 @@ import { Button, Link, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react"; 
 import { styled } from "@mui/material/styles";
+import { StyledButtonLarge } from "./common/StyledButton";
 
 const StyledTypographyOption = styled("div")(({ disabledOption }) => ({
   backgroundColor: "beige",
@@ -16,20 +17,6 @@ const StyledTypographyOption = styled("div")(({ disabledOption }) => ({
   },
 }));
 
-const StyledButton = styled("div")(({}) => ({
-  backgroundColor: "green",
-  borderRadius: "20px",
-  textAlign: "center",
-  marginTop: "1rem",
-  fontSize: "2rem",
-  color: "white",
-  textTransform: "uppercase",
-  "&:hover": {
-    transform: "scale(1.02) perspective(0px)",
-    boxShadow: "2px 2px 2px 2px #green",
-    cursor: "pointer",
-  },
-}));
 
 const StyledMessage = styled("div")(({ isSuccessOption }) => ({
   backgroundColor: isSuccessOption ? "green" : "red",
@@ -120,7 +107,7 @@ const QuizDemo = (data) => {
       <StyledMessage isSuccessOption={isSuccessOption}>{message}</StyledMessage>
 
       <div onClick={() => onNextQuestion()}>
-        <StyledButton disabledOption={disabledOption}>{"Next"}</StyledButton>
+        <StyledButtonLarge disabledOption={disabledOption}>{"Next"}</StyledButtonLarge>
       </div>
       <Typography align="center" variant="h5" component="h2" marginTop="2rem">
         {`${"Total Score :  "}${score}`}

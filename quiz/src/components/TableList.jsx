@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 
 const StyledTableHead = styled(TableHead)(() => ({
-  backgroundColor: "oldlace",
+  backgroundColor: "darkseagreen",
   fontSize: "2rem",
   color: "white",
   textTransform: "uppercase",
@@ -59,10 +59,10 @@ const TableList = ({ rows, columns, onClick , onViewDemo }) => {
                 {row.score ? row.score : noDataLabel}
               </TableCell>
               <TableCell>
-                <IconButton color="secondary" onClick={() => onViewData(row)}>
+                <IconButton color="seagreen" onClick={() => onViewData(row)}>
                   <EditIcon />
                 </IconButton>
-                <IconButton color="secondary" onClick={() => onClickViewDemo(row)}>
+                <IconButton color="seagreen" onClick={() => onClickViewDemo(row)}>
                   <VisibilityIcon />
                 </IconButton>
                 

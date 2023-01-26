@@ -8,6 +8,7 @@ import TableList from "./TableList";
 import { styled } from "@mui/system";
 import DataQuizForm from "./DataQuizForm";
 import QuizDemo from "./QuizDemo";
+import QuizTable from "./QuizTable";
 
 const StyledButton = styled(Button)(() => ({
   marginTop: "2rem",
@@ -159,30 +160,23 @@ const QuizFlow = ({ getList }) => {
     <Container>
       {pagesFlow.tableList === currentPage ? (
         <>
-          <Typography
-            align="center"
-            variant="h3"
-            component="h2"
-            marginTop="3rem"
-          >
-            {"Quiz List"}
-          </Typography>
-          <StyledButton variant="contained" onClick={createNewQuiz}>
-            Create new Quiz
-          </StyledButton>
-          <TableList rows={quizList} columns={columns} onClick={onViewData} onViewDemo={onViewDemo} />
+          <QuizTable data={quizList}
+            onViewData={onViewData}
+            onViewDemo={onViewDemo}
+            createNewQuiz={createNewQuiz} />
         </>
       ) : pagesFlow.quizDemo === currentPage ? (
-          <QuizDemo data={quizSelected} />
-      ):
-      
-      (
-        <DataQuizForm
-          onClick={onSaveQuiz}
-          data={quizSelected}
-          isNewQuiz={isNewQuiz}
-        />
-      )}
+        <QuizDemo data={quizSelected} onBack={onBack} />
+      ) :
+
+        (
+          <DataQuizForm
+            onClick={onSaveQuiz}
+            data={quizSelected}
+            isNewQuiz={isNewQuiz}
+            onBack={onBack}
+          />
+        )}
     </Container>
   );
 };
